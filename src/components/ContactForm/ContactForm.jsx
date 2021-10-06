@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions";
 import css from "./ContactForm.module.css";
 
-export default function ContactForm({ formSubmitHandler }) {
+function ContactForm({ formSubmitHandler }) {
+  console.log(formSubmitHandler);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
@@ -25,14 +28,15 @@ export default function ContactForm({ formSubmitHandler }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let idFullName = uuidv4();
-    const totalState = {
-      id: idFullName,
-      name: name,
-      number: number,
-    };
+    // let idFullName = uuidv4();
+    // const totalState = {
+    //   id: idFullName,
+    //   name: name,
+    //   number: number,
+    // };
 
-    formSubmitHandler(totalState);
+    const submitForm = () => formSubmitHandler({ name, number });
+    submitForm();
 
     reset();
   };
@@ -76,6 +80,12 @@ export default function ContactForm({ formSubmitHandler }) {
     </form>
   );
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  formSubmitHandler: (value) => dispatch(actions.addContacts(value)),
+});
+
+export default connect(null, mapDispatchToProps)(ContactForm);
 
 ContactForm.propTypes = {
   formSubmitHandler: PropTypes.func,

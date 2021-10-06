@@ -14,13 +14,13 @@ function App() {
     setFilter(e.target.value);
   };
 
-  const formSubmitHandler = (data) => {
-    const findContacts = contacts.find((contact) => contact.name === data.name);
+  // const formSubmitHandler = (data) => {
+  //   const findContacts = contacts.find((contact) => contact.name === data.name);
 
-    !findContacts
-      ? setContacts([data, ...contacts])
-      : alert(`${data.name} is already in contacts.`);
-  };
+  //   !findContacts
+  //     ? setContacts([data, ...contacts])
+  //     : alert(`${data.name} is already in contacts.`);
+  // };
 
   const getVisibleList = () => {
     const normalizeFilter = filter.toLowerCase();
@@ -37,7 +37,7 @@ function App() {
   return (
     <div className="App">
       <h1 className="titlePhonebook">Phonebook</h1>
-      <ContactForm formSubmitHandler={formSubmitHandler} />
+      <ContactForm />
 
       <h1 className="titleContacts">Contacts</h1>
       <Filter filter={filter} filterList={filterList} />
