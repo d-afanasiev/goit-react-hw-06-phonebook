@@ -37,7 +37,7 @@ function App() {
   return (
     <div className="App">
       <h1 className="titlePhonebook">Phonebook</h1>
-      <ContactForm />
+      <ContactForm setContacts={setContacts} />
 
       <h1 className="titleContacts">Contacts</h1>
       <Filter filter={filter} filterList={filterList} />

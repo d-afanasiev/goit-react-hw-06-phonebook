@@ -6,8 +6,40 @@ const rootReducer = combineReducers({
   contacts: reducer,
 });
 
-// const reducer = (state = rootReducer, action) => state;
+function saveToLocalStorage(state) {
+  try {
+    const serialisedState = JSON.stringify(state);
+    localStorage.setItem("contacts", serialisedState);
+  } catch (e) {
+    console.warn(e);
+  }
+}
 
-const store = createStore(rootReducer, composeWithDevTools());
+function loadFromLocalStorage() {
+  try {
+    const serialisedState = localStorage.getItem("contacts");
+    if (serialisedState === null) return undefined;
+    return JSON.parse(serialisedState);
+  } catch (e) {
+    console.warn(e);
+    return undefined;
+  }
+}
+
+const store = createStore(
+  rootReducer,
+  loadFromLocalStorage(),
+  composeWithDevTools()
+);
+
+store.subscribe(() => saveToLocalStorage(store.getState()));
 
 export default store;
+
+// const rootReducer = combineReducers({
+//   contacts: reducer,
+// });
+
+// const store = createStore(rootReducer, composeWithDevTools());
+
+// export default store;

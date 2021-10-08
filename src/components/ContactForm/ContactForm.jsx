@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import * as actions from "../../redux/actions";
 import css from "./ContactForm.module.css";
 
-function ContactForm({ formSubmitHandler }) {
-  console.log(formSubmitHandler);
+function ContactForm({ items, formSubmitHandler, setContacts }) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
@@ -35,8 +34,9 @@ function ContactForm({ formSubmitHandler }) {
     //   number: number,
     // };
 
-    const submitForm = () => formSubmitHandler({ name, number });
-    submitForm();
+    formSubmitHandler({ name, number });
+
+    // setContacts(items);
 
     reset();
   };
@@ -81,11 +81,15 @@ function ContactForm({ formSubmitHandler }) {
   );
 }
 
+const mapStateToProps = (state) => ({
+  items: state.contacts.items,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   formSubmitHandler: (value) => dispatch(actions.addContacts(value)),
 });
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
 
 ContactForm.propTypes = {
   formSubmitHandler: PropTypes.func,
