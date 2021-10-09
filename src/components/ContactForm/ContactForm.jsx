@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-// import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import * as actions from "../../redux/actions";
 import css from "./ContactForm.module.css";
 
-function ContactForm({ items, formSubmitHandler, setContacts }) {
+function ContactForm({ formSubmitHandler }) {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
@@ -27,16 +26,8 @@ function ContactForm({ items, formSubmitHandler, setContacts }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // let idFullName = uuidv4();
-    // const totalState = {
-    //   id: idFullName,
-    //   name: name,
-    //   number: number,
-    // };
 
     formSubmitHandler({ name, number });
-
-    // setContacts(items);
 
     reset();
   };

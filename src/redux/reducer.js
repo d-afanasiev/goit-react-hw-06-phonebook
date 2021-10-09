@@ -1,11 +1,9 @@
 import { combineReducers } from "redux";
-import { ADD, DELETE, FILTER } from "./types";
-
-const getLocalItems = window.localStorage.getItem("contacts");
+import * as types from "./types";
 
 const itemsReducer = (state = [], { type, payload }) => {
   switch (type) {
-    case ADD:
+    case types.ADD:
       const findContacts = state.find(
         (contact) => contact.name === payload.name
       );
@@ -17,6 +15,19 @@ const itemsReducer = (state = [], { type, payload }) => {
         return state;
       }
 
+    case types.DELETE:
+      return state.filter((contact) => contact.id !== payload.id);
+
+    default:
+      return state;
+  }
+};
+
+const filterReducer = (state = "", { type, payload }) => {
+  switch (type) {
+    case types.FILTER:
+      return payload;
+
     default:
       return state;
   }
@@ -24,4 +35,5 @@ const itemsReducer = (state = [], { type, payload }) => {
 
 export default combineReducers({
   items: itemsReducer,
+  filter: filterReducer,
 });

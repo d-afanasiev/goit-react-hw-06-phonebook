@@ -1,7 +1,13 @@
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions";
 import css from "./Filter.module.css";
 
-function Filter({ filter, filterList }) {
+function Filter({ getVisibleList }) {
+  const filterList = (e) => {
+    getVisibleList(e.target.value);
+  };
+
   return (
     <div>
       <p>Find contacts by name</p>
@@ -12,15 +18,18 @@ function Filter({ filter, filterList }) {
         title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
         className={css.inputFilter}
         onChange={filterList}
-        value={filter}
       />
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  getVisibleList: (value) => dispatch(actions.filterContacts(value)),
+});
 
 Filter.propTypes = {
   filter: PropTypes.string,
   formSubmitHandler: PropTypes.func,
 };
 
-export default Filter;
+export default connect(null, mapDispatchToProps)(Filter);

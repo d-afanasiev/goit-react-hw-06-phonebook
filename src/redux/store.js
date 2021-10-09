@@ -7,23 +7,14 @@ const rootReducer = combineReducers({
 });
 
 function saveToLocalStorage(state) {
-  try {
-    const serialisedState = JSON.stringify(state);
-    localStorage.setItem("contacts", serialisedState);
-  } catch (e) {
-    console.warn(e);
-  }
+  const serialisedState = JSON.stringify(state);
+  localStorage.setItem("contacts", serialisedState);
 }
 
 function loadFromLocalStorage() {
-  try {
-    const serialisedState = localStorage.getItem("contacts");
-    if (serialisedState === null) return undefined;
-    return JSON.parse(serialisedState);
-  } catch (e) {
-    console.warn(e);
-    return undefined;
-  }
+  const serialisedState = localStorage.getItem("contacts");
+  if (serialisedState === null) return undefined;
+  return JSON.parse(serialisedState);
 }
 
 const store = createStore(
@@ -35,11 +26,3 @@ const store = createStore(
 store.subscribe(() => saveToLocalStorage(store.getState()));
 
 export default store;
-
-// const rootReducer = combineReducers({
-//   contacts: reducer,
-// });
-
-// const store = createStore(rootReducer, composeWithDevTools());
-
-// export default store;
