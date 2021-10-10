@@ -1,28 +1,64 @@
-import { createStore, combineReducers } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+// import { createStore, combineReducers } from "redux";
+// import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import reducer from "../redux/reducer";
 
-const rootReducer = combineReducers({
-  contacts: reducer,
+const middleware = [
+  ...getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+];
+
+const todosPersistConfig = {
+  key: "contacts",
+  storage,
+  blacklist: ["filter"],
+};
+
+export const store = configureStore({
+  reducer: {
+    contacts: persistReducer(todosPersistConfig, reducer),
+  },
+  middleware,
+  devTools: process.env.NODE_ENV === "development",
 });
 
-function saveToLocalStorage(state) {
-  const serialisedState = JSON.stringify(state);
-  localStorage.setItem("contacts", serialisedState);
-}
+export const persistor = persistStore(store);
 
-function loadFromLocalStorage() {
-  const serialisedState = localStorage.getItem("contacts");
-  if (serialisedState === null) return undefined;
-  return JSON.parse(serialisedState);
-}
+// const rootReducer = combineReducers({
+//   contacts: reducer,
+// });
 
-const store = createStore(
-  rootReducer,
-  loadFromLocalStorage(),
-  composeWithDevTools()
-);
+// function saveToLocalStorage(state) {
+//   const serialisedState = JSON.stringify(state);
+//   localStorage.setItem("contacts", serialisedState);
+// }
 
-store.subscribe(() => saveToLocalStorage(store.getState()));
+// function loadFromLocalStorage() {
+//   const serialisedState = localStorage.getItem("contacts");
+//   if (serialisedState === null) return undefined;
+//   return JSON.parse(serialisedState);
+// }
 
-export default store;
+// const store = createStore(
+//   rootReducer,
+//   loadFromLocalStorage(),
+//   composeWithDevTools()
+// );
+
+// store.subscribe(() => saveToLocalStorage(store.getState()));
+
+// export default store;

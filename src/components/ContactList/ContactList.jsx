@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
+// import { connect } from "react-redux";
 import * as actions from "../../redux/actions";
 import css from "./ContactList.module.css";
 
-function ContactList({ getVisibleContacts, deleteContact, filter }) {
+export default function ContactList({ getVisibleContacts, filter }) {
+  const dispatch = useDispatch();
+  const deleteContact = (value) => dispatch(actions.deleteContacts(value));
   const visibleList = getVisibleContacts(filter);
   return (
     <ul className={css.listContacts}>
@@ -23,13 +26,13 @@ function ContactList({ getVisibleContacts, deleteContact, filter }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteContact: (value) => dispatch(actions.deleteContacts(value)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   deleteContact: (value) => dispatch(actions.deleteContacts(value)),
+// });
+
+// export default connect(null, mapDispatchToProps)(ContactList);
 
 ContactList.propTypes = {
   getVisibleContacts: PropTypes.func,
   deleteContact: PropTypes.func,
 };
-
-export default connect(null, mapDispatchToProps)(ContactList);

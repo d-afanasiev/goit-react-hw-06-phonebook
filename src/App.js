@@ -1,11 +1,15 @@
 import "./App.css";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import ContactForm from "./components/ContactForm";
 import Filter from "./components/Filter";
 import ContactList from "./components/ContactList";
 
-function App({ contacts, filter }) {
+export default function App() {
+  const contacts = useSelector((state) => state.contacts.items);
+  const filter = useSelector((state) => state.contacts.filter);
+
   const getVisibleList = () => {
     const normalizeFilter = filter.toLowerCase();
 
@@ -26,10 +30,12 @@ function App({ contacts, filter }) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  contacts: state.contacts.items,
-  filter: state.contacts.filter,
-});
+// const mapStateToProps = (state) => ({
+//   contacts: state.contacts.items,
+//   filter: state.contacts.filter,
+// });
+
+// export default connect(mapStateToProps, null)(App);
 
 App.propTypes = {
   contacts: PropTypes.arrayOf(
@@ -40,5 +46,3 @@ App.propTypes = {
     })
   ),
 };
-
-export default connect(mapStateToProps, null)(App);

@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as actions from "../../redux/actions";
 import css from "./Filter.module.css";
 
-function Filter({ getVisibleList }) {
+export default function Filter() {
+  const dispatch = useDispatch();
+  const getVisibleList = (value) => dispatch(actions.filterContacts(value));
   const filterList = (e) => {
     getVisibleList(e.target.value);
   };
@@ -23,13 +26,13 @@ function Filter({ getVisibleList }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getVisibleList: (value) => dispatch(actions.filterContacts(value)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   getVisibleList: (value) => dispatch(actions.filterContacts(value)),
+// });
+
+// export default connect(null, mapDispatchToProps)(Filter);
 
 Filter.propTypes = {
   filter: PropTypes.string,
   formSubmitHandler: PropTypes.func,
 };
-
-export default connect(null, mapDispatchToProps)(Filter);
